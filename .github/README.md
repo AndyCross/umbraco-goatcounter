@@ -1,4 +1,4 @@
-<img alt="GoatCounter for Umbraco logo: a goat whose beard is a bar chart" src="../docs/assets/logo/logo.png" width="120" align="right">
+<img alt="GoatCounter for Umbraco sticker: a white goat by the sea, its beard in three braids bound in teal, pink and mustard wool, like a bar chart" src="../docs/assets/logo/sticker-photo.png" width="230" align="right">
 
 # GoatCounter for Umbraco
 
@@ -132,8 +132,8 @@ Contributions to this package are most welcome! Please read the [Contributing Gu
 - The repository was started from [Lotte Pitcher](https://github.com/LottePitcher)'s [Opinionated Umbraco Package Starter](https://github.com/LottePitcher/opinionated-package-starter).
 - Built during a community Umbraco hackathon.
 
-### Logo
+### Logo and sticker
 
-The goat with a bar chart for a beard was drawn for this package.
+The package icon is a goat with a bar chart for a beard, drawn for this package. The sticker at the top of this page is the same idea as a photograph: it was generated with OpenAI's image model, so no goat sat for it and no beard was braided.
 
-<img alt="The package sticker: a goat whose beard is a bar chart, in a hexagon" src="../docs/assets/logo/sticker.png" width="220">
+<img alt="The package icon: a stylised goat whose beard is a three-colour bar chart" src="../docs/assets/logo/logo.png" width="96">
