@@ -1,0 +1,20 @@
+{
+  "$schema": "https://marketplace.umbraco.com/umbraco-marketplace-schema.json",
+  "AuthorDetails": {
+    "Name": "Andy Cross",
+    "ImageUrl": "https://github.com/AndyCross.png"
+  },
+  "Category": "Analytics & Insights",
+  "Description": "GoatCounter analytics in the backoffice: a dashboard, a Views tab on every page, and first-party page-view counting through your own site.",
+  "LicenseTypes": [
+    "Free"
+  ],
+  "IssueTrackerUrl": "https://github.com/AndyCross/umbraco-goatcounter/issues",
+  "PackageType": "Package",
+  "Tags": [
+    "analytics",
+    "goatcounter",
+    "privacy"
+  ],
+  "Title": "GoatCounter"
+}

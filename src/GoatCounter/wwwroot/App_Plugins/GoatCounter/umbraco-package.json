@@ -1,0 +1,14 @@
+{
+  "id": "GoatCounter",
+  "name": "GoatCounter",
+  "version": "0.0.0",
+  "allowTelemetry": true,
+  "extensions": [
+    {
+      "name": "Goat Counter Bundle",
+      "alias": "GoatCounter.Bundle",
+      "type": "bundle",
+      "js": "/App_Plugins/GoatCounter/goat-counter.js"
+    }
+  ]
+}
