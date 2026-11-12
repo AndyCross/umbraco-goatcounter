@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Product>Umbraco.Community.GoatCounter</Product>
+    <Product>GoatCounter for Umbraco</Product>
     <PackageId>Umbraco.Community.GoatCounter</PackageId>
     <Title>GoatCounter for Umbraco</Title>
     <Description>GoatCounter analytics for Umbraco: a backoffice dashboard, a Views tab on every page, and first-party page-view counting through your own site so blockers don't hide your visitors.</Description>

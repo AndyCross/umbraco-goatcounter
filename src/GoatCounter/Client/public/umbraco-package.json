@@ -1,11 +1,11 @@
 {
-  "id": "GoatCounter",
-  "name": "GoatCounter",
+  "id": "Umbraco.Community.GoatCounter",
+  "name": "GoatCounter for Umbraco",
   "version": "0.0.0",
   "allowTelemetry": true,
   "extensions": [
     {
-      "name": "Goat Counter Bundle",
+      "name": "GoatCounter Bundle",
       "alias": "GoatCounter.Bundle",
       "type": "bundle",
       "js": "/App_Plugins/GoatCounter/goat-counter.js"

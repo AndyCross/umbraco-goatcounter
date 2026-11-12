@@ -53,7 +53,7 @@ namespace GoatCounter.Composers
                 // Along with having a generated swagger JSON file that we can use to auto generate a TypeScript client
                 opt.SwaggerDoc(Constants.ApiName, new OpenApiInfo
                 {
-                    Title = "Goat Counter Backoffice API",
+                    Title = "GoatCounter for Umbraco Backoffice API",
                     Version = "1.0",
                     // Contact = new OpenApiContact
                     // {
