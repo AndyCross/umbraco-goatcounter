@@ -1,0 +1,35 @@
+name: Build
+
+# Builds the client and the package on every push and pull request, so a break shows up before a release.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build the client
+        working-directory: src/GoatCounter/Client
+        run: |
+          npm ci
+          npm run build
+
+      - name: Build and pack the package
+        run: dotnet pack src/GoatCounter/GoatCounter.csproj -c Release /p:Version=0.0.0-ci

@@ -9,7 +9,7 @@
   <PropertyGroup>
     <Product>Umbraco.Community.GoatCounter</Product>
     <PackageId>Umbraco.Community.GoatCounter</PackageId>
-    <Title>GoatCounter</Title>
+    <Title>GoatCounter for Umbraco</Title>
     <Description>GoatCounter analytics for Umbraco: a backoffice dashboard, a Views tab on every page, and first-party page-view counting through your own site so blockers don't hide your visitors.</Description>
     <PackageTags>umbraco;goatcounter;analytics</PackageTags>
     <Authors>Andy Cross</Authors>
@@ -19,7 +19,7 @@
     <PackageReadmeFile>README_nuget.md</PackageReadmeFile>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIcon></PackageIcon>
+    <PackageIcon>logo.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -35,6 +35,13 @@
 
     <!-- However make the Umbraco-package.json included for dotnet pack or nuget package and visible to the solution -->
     <None Include="Client\public\umbraco-package.json" Pack="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\docs\logo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

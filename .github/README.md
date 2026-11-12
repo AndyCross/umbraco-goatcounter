@@ -1,22 +1,32 @@
-# GoatCounter
+<img alt="GoatCounter for Umbraco logo: a goat whose beard is a bar chart" src="../docs/assets/logo/logo.png" width="120" align="right">
+
+# GoatCounter for Umbraco
 
 [![Downloads](https://img.shields.io/nuget/dt/Umbraco.Community.GoatCounter?color=cc9900)](https://www.nuget.org/packages/Umbraco.Community.GoatCounter/)
 [![NuGet](https://img.shields.io/nuget/vpre/Umbraco.Community.GoatCounter?color=0273B3)](https://www.nuget.org/packages/Umbraco.Community.GoatCounter)
 [![GitHub license](https://img.shields.io/github/license/AndyCross/umbraco-goatcounter?color=8AB803)](../LICENSE)
 
-[GoatCounter](https://www.goatcounter.com) is a small, open source, privacy-friendly web analytics service. This package brings it into Umbraco 17:
+[GoatCounter](https://www.goatcounter.com) is a small, open source, privacy-friendly web analytics service. This package brings it into the Umbraco backoffice, and lets your site count its own page views so blockers don't hide your visitors.
+
+<img alt="The Analytics dashboard in the Content section, showing views per day, most viewed pages and referrers" src="../docs/screenshots/dashboard.png" width="800">
+
+*Sample data.*
 
 - **A dashboard** in the Content section: views per day, most viewed pages, referrers, countries, browsers, systems and screen sizes, for the last 7, 30 or 90 days.
 - **A Views tab on every page**, showing how often that page was viewed.
-- **First-party counting.** Page views go to an endpoint on your own site, which passes them to GoatCounter. Blockers that know `gc.zgo.at` and `*.goatcounter.com` never see a request to them.
+- **First-party counting.** Page views go to an endpoint on your own site, which passes them to GoatCounter.
 
 Your API keys stay on the server. The browser never talks to GoatCounter.
+
+Umbraco versions supported: 17.x (tested on 17.0.0 and 17.8.1).
 
 ## Installation
 
 ```
 dotnet add package Umbraco.Community.GoatCounter
 ```
+
+Installing the package sends nothing. The dashboard appears once `Site` and `Token` are set, and counting starts only when `CountPageViews` is `true`.
 
 ## Configuration
 
@@ -42,7 +52,28 @@ dotnet add package Umbraco.Community.GoatCounter
 
 Create API keys in GoatCounter under Settings, API. Keep them out of source control: use user secrets or environment variables (`GoatCounter__Token`).
 
-Installing the package sends nothing. The dashboard appears once `Site` and `Token` are set, and counting starts only when `CountPageViews` is `true`.
+## Views on every page
+
+Each document gets a Views tab. A page's views are looked up under its URL.
+
+<img alt="The Views tab on a document, showing its views per day and the paths they were counted under" src="../docs/screenshots/document-views.png" width="800">
+
+*Sample data.*
+
+If a page used to live somewhere else, register an `IGoatCounterPathProvider` that returns its old paths, and the tab adds them together:
+
+```csharp
+public class OldBlogPaths : IGoatCounterPathProvider
+{
+    public IEnumerable<string> PathsFor(IPublishedContent content)
+    {
+        if (content.Value<string>("oldPath") is { Length: > 0 } old) yield return old;
+    }
+}
+
+// in a composer
+builder.Services.AddSingleton<IGoatCounterPathProvider, OldBlogPaths>();
+```
 
 ## Counting page views
 
@@ -53,38 +84,56 @@ Add the beacon to your layout's `<head>`:
 @Html.GoatCounterBeacon()
 ```
 
-It writes nothing on hosts you don't count, so development and staging sites stay silent. GoatCounter uses the visitor's IP address for sessions and location; if your site sits behind a proxy or CDN, configure ASP.NET Core's forwarded headers so the real address is passed on.
+```mermaid
+sequenceDiagram
+    participant B as Visitor's browser
+    participant S as Your Umbraco site
+    participant G as GoatCounter
+    B->>S: GET /s?p=/blog/hello (an image)
+    S-->>B: 1x1 GIF, straight away
+    Note over S: view waits in a queue
+    S->>G: POST /api/v0/count (a batch, with your API key)
+```
 
-## Pages that have moved
+- The visitor's browser only ever talks to your site, so blockers that know `gc.zgo.at` and `*.goatcounter.com` have nothing to block.
+- Your site answers straight away and sends views on in batches, so a page view never waits on GoatCounter.
+- The beacon writes nothing on hosts you don't count, so development and staging sites stay silent.
+- Views waiting to be sent are held in memory. A restart loses the last couple of seconds' worth.
 
-A page's views are looked up under its URL. If a page used to live somewhere else, register an `IGoatCounterPathProvider` that returns its old paths, and the Views tab adds them together.
+GoatCounter uses the visitor's IP address for sessions and location. If your site sits behind a proxy or CDN, configure ASP.NET Core's forwarded headers so the real address is passed on.
 
 ## Using the numbers in your own code
 
-Inject `GoatCounterStats` for views by path (`ViewsByPathAsync`) or for a set of paths (`ViewsAsync`), for example to build a "most read" list.
+Inject `GoatCounterStats` to build things like a "most read" list:
 
-<!--
-Including screenshots is a really good idea! 
+```csharp
+var views = await stats.ViewsByPathAsync(days: 7);   // path -> views
+```
 
-If you put images into /docs/screenshots, then you would reference them in this readme as, for example:
+## Try it in two minutes
 
-<img alt="..." src="https://github.com/AndyCross/umbraco-goatcounter/blob/develop/docs/screenshots/screenshot.png">
+The repository has a test site that installs itself.
 
-And don't forget to add the screenshot files to umbraco-marketplace.json too!
--->
+```
+git clone https://github.com/AndyCross/umbraco-goatcounter
+cd umbraco-goatcounter/src/GoatCounter.TestSite
+GoatCounter__Site=mysite GoatCounter__Token=your-api-key dotnet run
+```
 
-## Installation
-
-Add the package to an existing Umbraco website (v17+) from nuget:
-
-`dotnet add package Umbraco.Community.GoatCounter`
-
-TODO *provide any other instructions for someone using your package*
+Open https://localhost:44355/umbraco, log in with the details in `appsettings.Development.json`, and look for Analytics in the Content section.
 
 ## Contributing
 
 Contributions to this package are most welcome! Please read the [Contributing Guidelines](CONTRIBUTING.md).
 
-## Acknowledgments
+## Acknowledgements
 
-TODO
+- [GoatCounter](https://www.goatcounter.com) is made by Martin Tournoij. This package is a client for it and is not affiliated with the project.
+- The repository was started from [Lotte Pitcher](https://github.com/LottePitcher)'s [Opinionated Umbraco Package Starter](https://github.com/LottePitcher/opinionated-package-starter).
+- Built during a community Umbraco hackathon.
+
+### Logo
+
+The goat with a bar chart for a beard was drawn for this package.
+
+<img alt="The package sticker: a goat whose beard is a bar chart, in a hexagon" src="../docs/assets/logo/sticker.png" width="220">

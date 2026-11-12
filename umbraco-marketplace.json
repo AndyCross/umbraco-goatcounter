@@ -2,7 +2,10 @@
   "$schema": "https://marketplace.umbraco.com/umbraco-marketplace-schema.json",
   "AuthorDetails": {
     "Name": "Andy Cross",
-    "ImageUrl": "https://github.com/AndyCross.png"
+    "Description": "Writes about building software with AI at stepinto.dev.",
+    "Url": "https://stepinto.dev",
+    "ImageUrl": "https://github.com/AndyCross.png",
+    "Contributors": []
   },
   "Category": "Analytics & Insights",
   "Description": "GoatCounter analytics in the backoffice: a dashboard, a Views tab on every page, and first-party page-view counting through your own site.",
@@ -16,5 +19,15 @@
     "goatcounter",
     "privacy"
   ],
-  "Title": "GoatCounter"
+  "Title": "GoatCounter for Umbraco",
+  "Screenshots": [
+    {
+      "ImageUrl": "https://github.com/AndyCross/umbraco-goatcounter/raw/main/docs/screenshots/dashboard.png",
+      "Caption": "The Analytics dashboard in the Content section (sample data)"
+    },
+    {
+      "ImageUrl": "https://github.com/AndyCross/umbraco-goatcounter/raw/main/docs/screenshots/document-views.png",
+      "Caption": "The Views tab on a document (sample data)"
+    }
+  ]
 }

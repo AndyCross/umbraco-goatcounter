@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 680" role="img" aria-label="GoatCounter for Umbraco sticker">
+  <path d="M300 14 L582 177 V503 L300 666 L18 503 V177 Z" fill="#fbf8f3"/>
+  <path d="M300 40 L560 190 V490 L300 640 L40 490 V190 Z" fill="#1b264f"/>
+  <g transform="translate(108 64) scale(0.75)">
+    <path d="M196 170 C170 96 108 70 66 96 C112 104 140 140 150 196 Z" fill="#f5c1bc"/>
+    <path d="M316 170 C342 96 404 70 446 96 C400 104 372 140 362 196 Z" fill="#f5c1bc"/>
+    <path d="M150 214 C104 196 70 208 52 236 C92 250 130 248 160 240 Z" fill="#e9e4dc"/>
+    <path d="M362 214 C408 196 442 208 460 236 C420 250 382 248 352 240 Z" fill="#e9e4dc"/>
+    <path d="M256 150 C316 150 366 186 362 250 C358 306 322 356 256 356 C190 356 154 306 150 250 C146 186 196 150 256 150 Z" fill="#fbf8f3"/>
+    <rect x="186" y="232" width="44" height="16" rx="8" fill="#1b264f"/>
+    <rect x="282" y="232" width="44" height="16" rx="8" fill="#1b264f"/>
+    <path d="M236 300 H276 L256 322 Z" fill="#f5c1bc"/>
+    <rect x="206" y="346" width="24" height="36" rx="5" fill="#5ec4b6"/>
+    <rect x="244" y="346" width="24" height="84" rx="5" fill="#f5c1bc"/>
+    <rect x="282" y="346" width="24" height="56" rx="5" fill="#f2c14e"/>
+  </g>
+  <text x="300" y="512" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="46" fill="#fbf8f3">GoatCounter</text>
+  <text x="300" y="552" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="19" letter-spacing="2" fill="#f5c1bc">FOR UMBRACO</text>
+</svg>
