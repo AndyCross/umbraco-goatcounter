@@ -1,6 +1,6 @@
 export const manifests: Array<UmbExtensionManifest> = [
   {
-    name: "Goat Counter Entrypoint",
+    name: "GoatCounter Entrypoint",
     alias: "GoatCounter.Entrypoint",
     type: "backofficeEntryPoint",
     js: () => import("./entrypoint.js"),

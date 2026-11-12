@@ -1,6 +1,6 @@
 const t = [
   {
-    name: "Goat Counter Entrypoint",
+    name: "GoatCounter Entrypoint",
     alias: "GoatCounter.Entrypoint",
     type: "backofficeEntryPoint",
     js: () => import("./entrypoint-D6912Ild.js")
