@@ -1,6 +1,17 @@
 name: Release Package
 
 # This action will start when a correctly formatted tag is pushed (e.g. 0.1.0)
+#
+# It publishes with NuGet Trusted Publishing: no long-lived API key is stored anywhere. GitHub issues a
+# short-lived token for this run, nuget.org checks it against the trusted publishing policy for this
+# repository and this workflow file, and hands back an API key that lasts an hour.
+# https://learn.microsoft.com/nuget/nuget-org/trusted-publishing
+#
+# One-off setup:
+#   1. On nuget.org: your username > Trusted Publishing > add a policy with
+#        Repository Owner: AndyCross    Repository: umbraco-goatcounter    Workflow File: release.yml
+#   2. In this repository: Settings > Secrets and variables > Actions > add the secret NUGET_USER,
+#      set to your nuget.org username (the profile name, not your email address).
 
 on:
   push:
@@ -11,17 +22,28 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      id-token: write  # lets this job ask GitHub for the OIDC token nuget.org checks
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.0.x
 
       - name: Build & Pack
         run: dotnet pack src/GoatCounter/GoatCounter.csproj -c Release /p:Version=${{github.ref_name}}
 
+      # Ask for the key just before pushing: it is valid for one hour and each token buys one key.
+      - name: NuGet login (OIDC to a short-lived API key)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
       - name: Push to NuGet
-        run: dotnet nuget push **/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+        run: dotnet nuget push **/*.nupkg --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
