@@ -11,7 +11,7 @@
     <PackageId>Umbraco.Community.GoatCounter</PackageId>
     <Title>GoatCounter for Umbraco</Title>
     <Description>GoatCounter analytics for Umbraco: a backoffice dashboard, a Views tab on every page, and first-party page-view counting through your own site so blockers don't hide your visitors.</Description>
-    <PackageTags>umbraco;goatcounter;analytics</PackageTags>
+    <PackageTags>umbraco;umbraco-marketplace;goatcounter;analytics</PackageTags>
     <Authors>Andy Cross</Authors>
     <Copyright>$([System.DateTime]::UtcNow.ToString(`yyyy`)) © Andy Cross</Copyright>
     <PackageProjectUrl>https://github.com/AndyCross/umbraco-goatcounter</PackageProjectUrl>
