@@ -117,19 +117,33 @@ public class GoatCounterClient(HttpClient http, IOptionsMonitor<GoatCounterOptio
     private async Task<JsonDocument> GetAsync(string relative, CancellationToken ct)
     {
         if (!CanRead) throw new InvalidOperationException("GoatCounter is not configured: set GoatCounter:Site and GoatCounter:Token.");
-        for (var attempt = 0; ; attempt++)
+        // GoatCounter allows a few requests a second (429), and now and then answers a good request with a
+        // 404 or a 5xx, or doesn't answer in time. All of these pass, so wait a little longer each time and
+        // try again: five tries in all, about ten seconds of waiting at most.
+        const int tries = 5;
+        for (var attempt = 1; ; attempt++)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, new Uri(Options.BaseUri!, relative));
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", Options.Token);
-            using var response = await http.SendAsync(request, ct);
-            // GoatCounter allows a few requests a second; wait and try again when it says so.
-            if (response.StatusCode == HttpStatusCode.TooManyRequests && attempt < 4)
+            string why;
+            try
             {
-                await Task.Delay(TimeSpan.FromSeconds(1 + attempt), ct);
-                continue;
+                using var response = await http.SendAsync(request, ct);
+                if (response.IsSuccessStatusCode)
+                    return JsonDocument.Parse(await response.Content.ReadAsStringAsync(ct));
+                var transient = response.StatusCode is HttpStatusCode.TooManyRequests or HttpStatusCode.NotFound or HttpStatusCode.RequestTimeout
+                    || (int)response.StatusCode >= 500;
+                if (!transient || attempt == tries) response.EnsureSuccessStatusCode();
+                why = $"answered {(int)response.StatusCode}";
             }
-            response.EnsureSuccessStatusCode();
-            return JsonDocument.Parse(await response.Content.ReadAsStringAsync(ct));
+            catch (Exception e) when (attempt < tries && !ct.IsCancellationRequested
+                && (e is TaskCanceledException || e is HttpRequestException { StatusCode: null }))
+            {
+                // No answer at all: the connection failed or the request timed out.
+                why = e.Message;
+            }
+            logger.LogInformation("GoatCounter {Why} (try {Attempt} of {Tries}); trying again", why, attempt, tries);
+            await Task.Delay(TimeSpan.FromSeconds(attempt), ct);
         }
     }
 
